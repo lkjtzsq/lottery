@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>中国青年报客户端 用户签到送话费</title>
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <!-- 引入样式 -->
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/vant@2.9/lib/index.css"
+    />
+    <link rel="stylesheet" href="./css/swiper.min.css">
+</head>
+<body>
+<!--首页容器-->
+<div class="container">
+    <!--中奖信息-->
+    <div class="getter-box">
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+            </div>
+        </div>
+    </div>
+    <!--  规则按钮  -->
+    <div class="rules-btn">规则></div>
+    <!--累计签到-->
+    <div class="sign-box">
+        <h1 class="sign-title">已累计签到<span class="sign-days"></span>天</h1>
+        <p class="sign-desc">累计签到7天即可参与抽奖</p>
+        <img class="sign-image">
+        <img class="sign-btn" src="./img/sign-btn.png">
+    </div>
+    <!--  抽奖区域  -->
+    <div class="content">
+        <img class="content-img" src="./img/choujiang.jpg">
+        <div id="mask_img_bg">
+            <img class="cont-span" src="">
+        </div>
+        <img id="redux" src="./img/choujiang.jpg"/>
+    </div>
+</div>
+<!--规则浮层-->
+<div class="rules"></div>
+<!--抽奖之后浮层-->
+<div class="result"><img></div>
+
+
+<script src="./js/jquery.min.js"></script>
+<script src="./js/jquery.eraser.js"></script>
+<script src="./js/swiper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vant@2.9/lib/vant.min.js"></script>
+<!-- 引入组件库 -->
+<script>
+    $().ready(function () {
+        var signDays = 0; // 用户累计签到天数，默认为0，【ajax获取】
+        var result = 0;  // 0代表未中奖、10代表10元、50代表50元、100代表100元【ajax获取】
+        getSignData();
+        $('.sign-btn').click(function () { // 签到逻辑
+            var isSuccess = true;
+            if (isSuccess) {
+                signDays++;
+                if (signDays < 7) {  // 剩余抽奖天数
+                    vant.Toast("“签到成功！还需签到" + (7 - signDays) + "天就可以参与抽奖啦！”")
+                }
+                if (signDays == 7) {
+                    vant.Toast("“签到成功！快去试试手气抽取话费奖励吧！”");
+                }
+                if (signDays >= 7) {
+                    canLottery(signDays)
+                }
+                setSignImageUrl(signDays);
+            } else {
+                vant.Toast("“活动太火爆，服务器君已累晕，稍后再试吧！”");
+            }
+        });
+        $('img#redux').click(function () { // 签到未满7天刮奖点击事件
+            vant.Toast("莫急，再签到" + (7 - signDays) + "天就可以参与抽奖啦！")
+        });
+
+        $('.rules-btn').click(function () {  // 规则按钮
+            $('.rules').fadeIn();
+        });
+
+        $('.rules,.result').click(function () {  // 关闭浮窗
+            $(this).fadeOut();
+        })
+
+        function setImgSrc(result) { // 设置刮奖结果图片
+            switch (result) {
+                case 0: // 未中奖
+                    $('.cont-span').attr("src", "./img/noaward.png");
+                    $('.result img').attr("src", "./img/losing.png");
+                    break;
+                case 10: // 10元
+                    $('.cont-span').attr("src", "./img/10.png");
+                    $('.result img').attr("src", "./img/congratulation-10.png");
+                    break;
+                case 50: // 50元
+                    $('.cont-span').attr("src", "./img/50.png");
+                    $('.result img').attr("src", "./img/congratulation-50.png");
+                    break;
+                case 100:// 100元
+                    $('.cont-span').attr("src", "./img/100.jpg");
+                    $('.result img').attr("src", "./img/congratulation-100.png");
+                    break;
+            }
+        }
+
+        function setSignImageUrl(day) {  // 设置累计签到天数
+            if (day > 7) {
+                day = 7;
+            }
+            var url = `./img/${day}.png`;
+            $('.sign-image').attr('src', url) //签到天数图片
+            $('.sign-days').html(signDays); //签到天数
+        }
+
+        function canLottery(days) {  // 刮奖代码
+            if (days >= 7) {
+                $('#redux').eraser({
+                    size: 50,   //设置橡皮擦大小
+                    completeRatio: .5, //设置擦除面积比例
+                    completeFunction: showResetButton   //大于擦除面积比例触发函数
+                });
+
+                function showResetButton() {
+                    $('.result').fadeIn();
+                }
+            }
+        }
+
+        function initSwiper(list) {  // 初始化中奖信息滚动轮播
+            var str = '';
+            $.each(list, function (_, item) {
+                var name = item.name;
+                var content = item.content;
+                str += '<div class="swiper-slide"><div class="getter"><p class="getter-name yellow">'+name+'</p><p class="getter-content">抽中了<span class="yellow">'+content+'</span>话费红包</p></div></div>';
+            })
+            $(str).appendTo($('.swiper-wrapper'));
+            var swiper = new Swiper('.swiper-container', {
+                direction: 'vertical',
+                autoplay: {
+                    delay: 5000,//1秒切换一次
+                }
+            })
+        }
+
+        function getSignData() { // 模拟通过ajax获取签到天数、中奖设定等
+            $.get("./json/award.json", function (res) {
+                signDays = res.signDays; // 对全局变量赋值
+                result = res.result;  // 对全局变量赋值
+                setImgSrc(result); // 设置刮奖结果图片
+                setSignImageUrl(signDays); // 初始化签到天数图片
+                canLottery(signDays) // 刮奖代码初始化
+                initSwiper(res.result_list)
+            })
+        }
+    });
+
+</script>
+</body>
+</html>

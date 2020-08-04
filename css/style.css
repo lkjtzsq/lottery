@@ -1,0 +1,166 @@
+body{
+    background:#4e2ea9;
+}
+/* 首页容器 */
+.container {
+    position: absolute;
+    width: 100%;
+    /* height: 100%; */
+    background: #4e2ea9 url(../img/body-bg.jpg) center top no-repeat;
+    background-size: 100%;
+    overflow: hidden;
+}
+
+.getter-box {
+    background: url(../img/circle1.png);
+    background-size: 100% 100%;
+    width: 62%;
+    margin: 35% auto;
+    font-size: 13px;
+}
+
+.getter {
+    display: flex;
+    color: #fff;
+    height: 40px;
+    line-height: 36px;
+    margin: 0 15px;
+    align-items: center;
+    justify-content: center;
+}
+
+.getter-name {
+    /* width: 36%; */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.getter-content {
+    /* width: 64%; */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.yellow {
+    color: #ffe50d;
+}
+
+.sign-box {
+    width: 92%;
+    background: rgba(255, 255, 255, .1);
+    margin: 48% auto 0;
+    text-align: center;
+    position: relative;
+    padding-bottom: 7%;
+    border-radius: 5px;
+}
+
+.sign-title {
+    color: #fff000;
+    font-size: 22px;
+    font-weight: normal;
+    padding: 15px 0 10px;
+}
+
+.sign-desc {
+    font-size: 15px;
+    color: #fff;
+}
+
+.sign-image {
+    width: 92%;
+    margin: 12px 0 0;
+}
+
+.sign-btn {
+    width: 29%;
+    position: absolute;
+    bottom: -21%;
+    left: 35.5%;
+}
+
+.sign-days {
+    color: #ff620d;
+    font-size: 26px;
+}
+
+.content {
+    position: relative;
+    width: 92%;
+    margin: 10% auto;
+}
+
+.content-img {
+    width: 100%;
+    display: block;
+    opacity: 0;
+}
+
+#mask_img_bg {
+    position: absolute;
+    background: #fff;
+    border-radius: 6px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.cont-span {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+#redux {
+    z-index: 22;
+    position: absolute;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
+    left: 0;
+    top: 0;
+}
+.rules-btn{
+    color:#4e2ea9;
+    background: #eeebf7;
+    font-size: 12px;
+    position: absolute;
+    right: 0;
+    top: 19%;
+    padding: 7px 9px;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+}
+.rules{
+    position: fixed;
+    background: url(../img/rules.png);
+    background-size: 100% 100%;
+    width:100%;
+    height:100%;
+    left:0;
+    top:0;
+    z-index: 100;
+    display: none;
+}
+.result{
+    position: fixed;
+    width:100%;
+    height:100%;
+    left:0;
+    top:0;
+    z-index: 100;
+    display: none;
+}
+.result img{
+    width: 100%;
+    height:100%;
+    display: block;
+}
+.swiper-container{
+    height: 40px;
+    overflow: hidden;
+}
