@@ -1,5 +1,6 @@
 {
-  "signDays":0,
+  "signSwitch": true,
+  "signDays":7,
   "result": 50,
   "result_list": [
     {

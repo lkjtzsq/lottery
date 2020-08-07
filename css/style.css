@@ -30,16 +30,12 @@ body{
 }
 
 .getter-name {
-    /* width: 36%; */
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
 .getter-content {
-    /* width: 64%; */
-    overflow: hidden;
-    text-overflow: ellipsis;
     white-space: nowrap;
 }
 

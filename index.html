@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
     <title>中国青年报客户端 用户签到送话费</title>
+    <meta name="keywords" content="签到,用户签到送话费">
+    <meta name="description" content="签到,用户签到送话费">
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/style.css">
     <!-- 引入样式 -->
@@ -57,10 +59,10 @@
     $().ready(function () {
         var signDays = 0; // 用户累计签到天数，默认为0，【ajax获取】
         var result = 0;  // 0代表未中奖、10代表10元、50代表50元、100代表100元【ajax获取】
+        var signSwitch = true; // 是否只允许
         getSignData();
         $('.sign-btn').click(function () { // 签到逻辑
-            var isSuccess = true;
-            if (isSuccess) {
+            if (signSwitch) {
                 signDays++;
                 if (signDays < 7) {  // 剩余抽奖天数
                     vant.Toast("“签到成功！还需签到" + (7 - signDays) + "天就可以参与抽奖啦！”")
@@ -72,8 +74,9 @@
                     canLottery(signDays)
                 }
                 setSignImageUrl(signDays);
+                signSwitch = false;
             } else {
-                vant.Toast("“活动太火爆，服务器君已累晕，稍后再试吧！”");
+                vant.Toast("“您已签到，明天再来签到吧！”");
             }
         });
         $('img#redux').click(function () { // 签到未满7天刮奖点击事件
@@ -137,7 +140,7 @@
             $.each(list, function (_, item) {
                 var name = item.name;
                 var content = item.content;
-                str += '<div class="swiper-slide"><div class="getter"><p class="getter-name yellow">'+name+'</p><p class="getter-content">抽中了<span class="yellow">'+content+'</span>话费红包</p></div></div>';
+                str += '<div class="swiper-slide"><div class="getter"><p class="getter-name yellow">' + name + '</p><p class="getter-content">抽中了<span class="yellow">' + content + '</span>话费红包</p></div></div>';
             })
             $(str).appendTo($('.swiper-wrapper'));
             var swiper = new Swiper('.swiper-container', {
@@ -152,6 +155,7 @@
             $.get("./json/award.json", function (res) {
                 signDays = res.signDays; // 对全局变量赋值
                 result = res.result;  // 对全局变量赋值
+                signSwitch = res.signSwitch; // 对全局变量赋值
                 setImgSrc(result); // 设置刮奖结果图片
                 setSignImageUrl(signDays); // 初始化签到天数图片
                 canLottery(signDays) // 刮奖代码初始化
